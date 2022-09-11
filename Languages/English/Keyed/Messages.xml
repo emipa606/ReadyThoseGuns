@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RDG.OutOfAmmo>There is no nearby ammo</RDG.OutOfAmmo>
+  <RDG.OutOfFuel>There is no nearby material</RDG.OutOfFuel>
+  <RDG.NotOnCooldown>The gun is not on cooldown</RDG.NotOnCooldown>
+</LanguageData>
