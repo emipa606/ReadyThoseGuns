@@ -16,7 +16,7 @@ public class JobDriver_Ready : JobDriver
         }
 
         var compRefuelable = building_TurretGun.TryGetComp<CompRefuelable>();
-        return compRefuelable != null && !compRefuelable.HasFuel && compRefuelable.Props.fuelIsMortarBarrel &&
+        return compRefuelable is { HasFuel: false } && compRefuelable.Props.fuelIsMortarBarrel &&
                !Find.Storyteller.difficulty.classicMortars;
     }
 
@@ -28,7 +28,7 @@ public class JobDriver_Ready : JobDriver
         }
 
         var compChangeableProjectile = building_TurretGun.gun.TryGetComp<CompChangeableProjectile>();
-        return compChangeableProjectile != null && !compChangeableProjectile.Loaded;
+        return compChangeableProjectile is { Loaded: false };
     }
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)

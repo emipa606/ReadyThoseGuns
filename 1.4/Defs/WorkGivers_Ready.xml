@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <WorkGiverDef>
+    <defName>RTG_Ready</defName>
+    <label>ready weapons</label>
+    <giverClass>ReadyThoseGuns.WorkGiver_Ready</giverClass>
+    <workType>Hauling</workType>
+    <verb>ready</verb>
+    <gerund>readying</gerund>
+    <priorityInType>150</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+</Defs>
