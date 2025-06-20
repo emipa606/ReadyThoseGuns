@@ -10,18 +10,18 @@ namespace ReadyThoseGuns;
 public static class Main
 {
     public static readonly FieldInfo CoolDownFieldInfo;
-    public static readonly FieldInfo ProgressBarEffecterFieldInfo;
+    private static readonly FieldInfo progressBarEffecterFieldInfo;
 
     static Main()
     {
         CoolDownFieldInfo = AccessTools.Field(typeof(Building_TurretGun), "burstCooldownTicksLeft");
-        ProgressBarEffecterFieldInfo = AccessTools.Field(typeof(Building_TurretGun), "progressBarEffecter");
+        progressBarEffecterFieldInfo = AccessTools.Field(typeof(Building_TurretGun), "progressBarEffecter");
     }
 
     public static bool ProgressComplete(Building_TurretGun turretGun)
     {
         var currentCooldown = (int)CoolDownFieldInfo.GetValue(turretGun);
-        var progressBarEffecter = (Effecter)ProgressBarEffecterFieldInfo.GetValue(turretGun);
+        var progressBarEffecter = (Effecter)progressBarEffecterFieldInfo.GetValue(turretGun);
         currentCooldown--;
         CoolDownFieldInfo.SetValue(turretGun, currentCooldown);
 
@@ -33,7 +33,7 @@ public static class Main
             }
 
             progressBarEffecter.Cleanup();
-            ProgressBarEffecterFieldInfo.SetValue(turretGun, null);
+            progressBarEffecterFieldInfo.SetValue(turretGun, null);
 
             return true;
         }
@@ -44,16 +44,13 @@ public static class Main
             totalTime = turretGun.AttackVerb.verbProps.defaultCooldownTime;
         }
 
-        if (progressBarEffecter == null)
-        {
-            progressBarEffecter = EffecterDefOf.ProgressBar.Spawn();
-        }
+        progressBarEffecter ??= EffecterDefOf.ProgressBar.Spawn();
 
         progressBarEffecter.EffectTick(turretGun, TargetInfo.Invalid);
         var mote = ((SubEffecter_ProgressBar)progressBarEffecter.children[0]).mote;
         mote.progress = 1f - (Math.Max(currentCooldown, 0) / (float)totalTime.SecondsToTicks());
         mote.offsetZ = -0.8f;
-        ProgressBarEffecterFieldInfo.SetValue(turretGun, progressBarEffecter);
+        progressBarEffecterFieldInfo.SetValue(turretGun, progressBarEffecter);
         return false;
     }
 

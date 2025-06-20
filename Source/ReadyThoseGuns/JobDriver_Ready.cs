@@ -8,26 +8,26 @@ namespace ReadyThoseGuns;
 
 public class JobDriver_Ready : JobDriver
 {
-    public static bool GunNeedsRefueling(Building b)
+    public static bool GunNeedsRefueling(Building building)
     {
-        if (b is not Building_TurretGun building_TurretGun)
+        if (building is not Building_TurretGun buildingTurretGun)
         {
             return false;
         }
 
-        var compRefuelable = building_TurretGun.TryGetComp<CompRefuelable>();
+        var compRefuelable = buildingTurretGun.TryGetComp<CompRefuelable>();
         return compRefuelable is { HasFuel: false } && compRefuelable.Props.fuelIsMortarBarrel &&
                !Find.Storyteller.difficulty.classicMortars;
     }
 
-    public static bool GunNeedsLoading(Building b)
+    public static bool GunNeedsLoading(Building building)
     {
-        if (b is not Building_TurretGun building_TurretGun)
+        if (building is not Building_TurretGun buildingTurretGun)
         {
             return false;
         }
 
-        var compChangeableProjectile = building_TurretGun.gun.TryGetComp<CompChangeableProjectile>();
+        var compChangeableProjectile = buildingTurretGun.gun.TryGetComp<CompChangeableProjectile>();
         return compChangeableProjectile is { Loaded: false };
     }
 
@@ -46,24 +46,24 @@ public class JobDriver_Ready : JobDriver
         {
             var actor = refuelIfNeeded.actor;
             var building = (Building)actor.CurJob.targetA.Thing;
-            var building_TurretGun = building as Building_TurretGun;
+            var buildingTurretGun = building as Building_TurretGun;
             if (!GunNeedsRefueling(building))
             {
                 JumpToToil(gotoTurret);
                 return;
             }
 
-            var thing = JobDriver_ManTurret.FindFuelForTurret(pawn, building_TurretGun);
+            var thing = JobDriver_ManTurret.FindFuelForTurret(pawn, buildingTurretGun);
             if (thing == null)
             {
                 var compRefuelable = building.TryGetComp<CompRefuelable>();
                 if (actor.Faction == Faction.OfPlayer && compRefuelable != null)
                 {
                     Messages.Message(
-                        "MessageOutOfNearbyFuelFor".Translate(actor.LabelShort, building_TurretGun?.Label,
-                            actor.Named("PAWN"), building_TurretGun.Named("GUN"),
+                        "MessageOutOfNearbyFuelFor".Translate(actor.LabelShort, buildingTurretGun?.Label,
+                            actor.Named("PAWN"), buildingTurretGun.Named("GUN"),
                             compRefuelable.Props.fuelFilter.Summary.Named("FUEL")).CapitalizeFirst(),
-                        building_TurretGun, MessageTypeDefOf.NegativeEvent);
+                        buildingTurretGun, MessageTypeDefOf.NegativeEvent);
                 }
 
                 actor.jobs.EndCurrentJob(JobCondition.Incompletable);
@@ -87,21 +87,21 @@ public class JobDriver_Ready : JobDriver
         {
             var actor = loadIfNeeded.actor;
             var building = (Building)actor.CurJob.targetA.Thing;
-            var building_TurretGun = building as Building_TurretGun;
+            var buildingTurretGun = building as Building_TurretGun;
             if (!GunNeedsLoading(building))
             {
                 JumpToToil(gotoTurret);
                 return;
             }
 
-            var thing = JobDriver_ManTurret.FindAmmoForTurret(pawn, building_TurretGun);
+            var thing = JobDriver_ManTurret.FindAmmoForTurret(pawn, buildingTurretGun);
             if (thing == null)
             {
                 if (actor.Faction == Faction.OfPlayer)
                 {
                     Messages.Message(
-                        "MessageOutOfNearbyShellsFor".Translate(actor.LabelShort, building_TurretGun?.Label,
-                            actor.Named("PAWN"), building_TurretGun.Named("GUN")).CapitalizeFirst(), building_TurretGun,
+                        "MessageOutOfNearbyShellsFor".Translate(actor.LabelShort, buildingTurretGun?.Label,
+                            actor.Named("PAWN"), buildingTurretGun.Named("GUN")).CapitalizeFirst(), buildingTurretGun,
                         MessageTypeDefOf.NegativeEvent);
                 }
 
@@ -121,11 +121,11 @@ public class JobDriver_Ready : JobDriver
         loadShell.initAction = delegate
         {
             var actor = loadShell.actor;
-            if ((Building)actor.CurJob.targetA.Thing is Building_TurretGun building_TurretGun)
+            if ((Building)actor.CurJob.targetA.Thing is Building_TurretGun buildingTurretGun)
             {
-                SoundDefOf.Artillery_ShellLoaded.PlayOneShot(new TargetInfo(building_TurretGun.Position,
-                    building_TurretGun.Map));
-                building_TurretGun.gun.TryGetComp<CompChangeableProjectile>()
+                SoundDefOf.Artillery_ShellLoaded.PlayOneShot(new TargetInfo(buildingTurretGun.Position,
+                    buildingTurretGun.Map));
+                buildingTurretGun.gun.TryGetComp<CompChangeableProjectile>()
                     .LoadShell(actor.CurJob.targetB.Thing.def, 1);
             }
 
@@ -151,8 +151,8 @@ public class JobDriver_Ready : JobDriver
             }
 
             ready.actor.rotationTracker.FaceCell(building.Position);
-            var building_TurretGun = (Building_TurretGun)building;
-            if (!Main.ProgressComplete(building_TurretGun))
+            var buildingTurretGun = (Building_TurretGun)building;
+            if (!Main.ProgressComplete(buildingTurretGun))
             {
                 return;
             }

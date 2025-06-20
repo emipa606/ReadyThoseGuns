@@ -44,15 +44,15 @@ public class WorkGiver_Ready : WorkGiver_Scanner
             return false;
         }
 
-        if (building is not Building_TurretGun building_TurretGun)
+        if (building is not Building_TurretGun buildingTurretGun)
         {
             Main.LogMessage($"{building} is not a Building_TurretGun");
             return false;
         }
 
-        if (JobDriver_Ready.GunNeedsLoading(building_TurretGun))
+        if (JobDriver_Ready.GunNeedsLoading(buildingTurretGun))
         {
-            var thereIsAmmo = JobDriver_ManTurret.FindAmmoForTurret(pawn, building_TurretGun) != null;
+            var thereIsAmmo = JobDriver_ManTurret.FindAmmoForTurret(pawn, buildingTurretGun) != null;
             if (!thereIsAmmo)
             {
                 JobFailReason.Is("RDG.OutOfAmmo".Translate());
@@ -61,9 +61,9 @@ public class WorkGiver_Ready : WorkGiver_Scanner
             return thereIsAmmo;
         }
 
-        if (JobDriver_Ready.GunNeedsRefueling(building_TurretGun))
+        if (JobDriver_Ready.GunNeedsRefueling(buildingTurretGun))
         {
-            var thereIsFuel = JobDriver_ManTurret.FindFuelForTurret(pawn, building_TurretGun) != null;
+            var thereIsFuel = JobDriver_ManTurret.FindFuelForTurret(pawn, buildingTurretGun) != null;
             if (!thereIsFuel)
             {
                 JobFailReason.Is("RDG.OutOfFuel".Translate());
@@ -72,13 +72,13 @@ public class WorkGiver_Ready : WorkGiver_Scanner
             return thereIsFuel;
         }
 
-        if ((int)Main.CoolDownFieldInfo.GetValue(building_TurretGun) > 0)
+        if ((int)Main.CoolDownFieldInfo.GetValue(buildingTurretGun) > 0)
         {
             return true;
         }
 
         JobFailReason.Is("RDG.NotOnCooldown".Translate());
-        Main.LogMessage($"{building_TurretGun} is not on cooldown");
+        Main.LogMessage($"{buildingTurretGun} is not on cooldown");
         return false;
     }
 
