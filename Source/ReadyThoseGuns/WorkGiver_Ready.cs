@@ -72,7 +72,7 @@ public class WorkGiver_Ready : WorkGiver_Scanner
             return thereIsFuel;
         }
 
-        if ((int)Main.CoolDownFieldInfo.GetValue(buildingTurretGun) > 0)
+        if ((int)(Main.CoolDownFieldInfo.GetValue(buildingTurretGun) ?? 0) > 0)
         {
             return true;
         }

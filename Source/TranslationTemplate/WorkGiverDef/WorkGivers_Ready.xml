@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: ready weapons -->
+  <RTG_Ready.label>ready weapons</RTG_Ready.label>
+  <!-- EN: readying -->
+  <RTG_Ready.gerund>readying</RTG_Ready.gerund>
+  <!-- EN: ready -->
+  <RTG_Ready.verb>ready</RTG_Ready.verb>
+</LanguageData>

@@ -20,7 +20,7 @@ public static class Main
 
     public static bool ProgressComplete(Building_TurretGun turretGun)
     {
-        var currentCooldown = (int)CoolDownFieldInfo.GetValue(turretGun);
+        var currentCooldown = (int)(CoolDownFieldInfo.GetValue(turretGun) ?? 0);
         var progressBarEffecter = (Effecter)progressBarEffecterFieldInfo.GetValue(turretGun);
         currentCooldown--;
         CoolDownFieldInfo.SetValue(turretGun, currentCooldown);
